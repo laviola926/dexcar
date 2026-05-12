@@ -1,0 +1,594 @@
+# DEXCAR - SISTEMA COMPLETO COM LOGIN + FIREBASE
+
+## index.html
+
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DEXCAR ESTOQUE PRO</title>
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginTela" class="login-container">
+
+<div class="login-box">
+
+<h1>DEXCAR</h1>
+<p>Sistema Inteligente de Estoque</p>
+
+<input type="text" id="usuario" placeholder="Usuário">
+
+<input type="password" id="senha" placeholder="Senha">
+
+<button onclick="fazerLogin()">
+Entrar no Sistema
+</button>
+
+<div id="erro" class="erro"></div>
+
+</div>
+
+</div>
+
+<!-- SISTEMA -->
+<div id="sistema" style="display:none;">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+
+<h2>DEXCAR</h2>
+
+<ul>
+<li>?? Produtos</li>
+<li>?? Dashboard</li>
+<li>?? Movimentações</li>
+<li>?? Alertas</li>
+<li>?? Auditoria</li>
+<li onclick="sair()">?? Sair</li>
+</ul>
+
+</div>
+
+<!-- CONTEÚDO -->
+<div class="main-content">
+
+<header>
+
+<div>
+<h1>Sistema de Estoque</h1>
+<p>Controle profissional de produtos</p>
+</div>
+
+<div class="status-online">
+?? Online
+</div>
+
+</header>
+
+<!-- DASHBOARD -->
+<div class="dashboard-grid">
+
+<div class="dashboard-card">
+<h3>Total Produtos</h3>
+<h2 id="totalProdutos">0</h2>
+</div>
+
+<div class="dashboard-card alerta">
+<h3>Estoque Baixo</h3>
+<h2 id="estoqueBaixo">0</h2>
+</div>
+
+<div class="dashboard-card vencimento">
+<h3>Vencendo</h3>
+<h2 id="produtosVencendo">0</h2>
+</div>
+
+<div class="dashboard-card movimentacao">
+<h3>Movimentações</h3>
+<h2 id="totalMov">0</h2>
+</div>
+
+</div>
+
+<!-- CADASTRO -->
+<div class="card">
+
+<div class="card-topo">
+<h2>Cadastro de Produto</h2>
+</div>
+
+<div class="form-grid">
+
+<input type="text" id="nome" placeholder="Nome do produto">
+
+<input type="number" id="quantidade" placeholder="Quantidade">
+
+<input type="number" id="minimo" placeholder="Estoque mínimo">
+
+<input type="text" id="categoria" placeholder="Categoria">
+
+<input type="text" id="codigo" placeholder="Código do produto">
+
+<input type="text" id="fornecedor" placeholder="Fornecedor">
+
+<input type="text" id="lote" placeholder="Lote">
+
+<input type="date" id="validade">
+
+<input type="text" id="localizacao" placeholder="Prateleira / Setor">
+
+<input type="number" id="preco" placeholder="Preço">
+
+</div>
+
+<button class="btn-principal" onclick="adicionarProduto()">
+Cadastrar Produto
+</button>
+
+</div>
+
+<!-- MOVIMENTAÇÃO -->
+<div class="card">
+
+<h2>Movimentação de Estoque</h2>
+
+<div class="form-grid">
+
+<select id="produtoSelect"></select>
+
+<input type="number" id="movQuantidade" placeholder="Quantidade">
+
+<select id="tipoMov">
+<option value="entrada">Entrada</option>
+<option value="saida">Saída</option>
+</select>
+
+<input type="text" id="responsavel" placeholder="Responsável">
+
+</div>
+
+<button class="btn-principal" onclick="movimentarEstoque()">
+Salvar Movimentação
+</button>
+
+</div>
+
+<!-- TABELA -->
+<div class="card">
+
+<div class="card-topo">
+<h2>Produtos Cadastrados</h2>
+<input type="text" id="pesquisa" placeholder="Pesquisar produto...">
+</div>
+
+<div class="tabela-container">
+
+<table>
+
+<thead>
+<tr>
+<th>Produto</th>
+<th>Código</th>
+<th>Categoria</th>
+<th>Quantidade</th>
+<th>Mínimo</th>
+<th>Lote</th>
+<th>Validade</th>
+<th>Localização</th>
+<th>Preço</th>
+<th>Status</th>
+</tr>
+</thead>
+
+<tbody id="tabelaProdutos"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script type="module" src="script.js"></script>
+
+</body>
+</html>
+```
+
+---
+
+## style.css
+
+```css
+body{
+font-family:Arial;
+background:#f1f5f9;
+margin:0;
+padding:0;
+}
+
+.login{
+width:320px;
+margin:100px auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+.login h2{
+text-align:center;
+color:#0f172a;
+}
+
+input,
+select{
+width:100%;
+padding:12px;
+margin-top:10px;
+border-radius:10px;
+border:1px solid #ccc;
+font-size:16px;
+box-sizing:border-box;
+}
+
+button{
+width:100%;
+padding:12px;
+margin-top:15px;
+background:#2563eb;
+color:white;
+border:none;
+border-radius:10px;
+font-size:16px;
+cursor:pointer;
+}
+
+button:hover{
+background:#1d4ed8;
+}
+
+.erro{
+color:red;
+text-align:center;
+margin-top:10px;
+}
+
+header{
+background:#0f172a;
+color:white;
+padding:20px;
+text-align:center;
+font-size:28px;
+font-weight:bold;
+}
+
+.container{
+padding:20px;
+max-width:1200px;
+margin:auto;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:15px;
+margin-bottom:20px;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
+}
+
+table th{
+background:#0f172a;
+color:white;
+padding:12px;
+}
+
+table td{
+padding:12px;
+border-bottom:1px solid #ddd;
+text-align:center;
+}
+
+.baixo{
+background:#fee2e2;
+color:#dc2626;
+padding:5px 10px;
+border-radius:20px;
+font-weight:bold;
+}
+
+.normal{
+background:#dcfce7;
+color:#16a34a;
+padding:5px 10px;
+border-radius:20px;
+font-weight:bold;
+}
+
+.vencendo{
+background:#fef3c7;
+color:#d97706;
+padding:5px 10px;
+border-radius:20px;
+font-weight:bold;
+}
+
+.sair{
+background:red;
+width:auto;
+padding:10px 20px;
+float:right;
+margin-top:-10px;
+}
+```
+
+---
+
+## script.js
+
+```javascript
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+addDoc,
+getDocs,
+updateDoc,
+doc
+}
+from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyCs8V8WgSbl5lDmdaRIJwuLCMO6vcvWQlQ",
+
+authDomain: "dexcar-epi.firebaseapp.com",
+
+projectId: "dexcar-epi",
+
+storageBucket: "dexcar-epi.firebasestorage.app",
+
+messagingSenderId: "908251513666",
+
+appId: "1:908251513666:web:ca62c1ed8176f98f787edb",
+
+measurementId: "G-MEPD929TSN"
+
+};
+
+const app = initializeApp(firebaseConfig);
+
+const db = getFirestore(app);
+
+console.log("Firebase conectado");
+
+window.fazerLogin = function(){
+
+const usuario = document.getElementById('usuario').value;
+const senha = document.getElementById('senha').value;
+
+if(usuario === 'admin' && senha === '1234'){
+
+document.getElementById('loginTela').style.display = 'none';
+document.getElementById('sistema').style.display = 'block';
+
+carregarProdutos();
+
+}else{
+
+document.getElementById('erro').innerText = 'Usuário ou senha inválidos';
+
+}
+
+}
+
+window.sair = function(){
+location.reload();
+}
+
+window.adicionarProduto = async function(){
+
+const nome = document.getElementById('nome').value;
+const quantidade = parseInt(document.getElementById('quantidade').value);
+const minimo = parseInt(document.getElementById('minimo').value);
+const lote = document.getElementById('lote').value;
+const validade = document.getElementById('validade').value;
+const localizacao = document.getElementById('localizacao').value;
+
+if(!nome || isNaN(quantidade) || isNaN(minimo)){
+alert('Preencha todos os campos');
+return;
+}
+
+await addDoc(collection(db, 'produtos'), {
+
+nome,
+quantidade,
+minimo,
+lote,
+validade,
+localizacao
+
+});
+
+alert('Produto cadastrado');
+
+limparCampos();
+
+carregarProdutos();
+
+}
+
+function limparCampos(){
+
+document.getElementById('nome').value = '';
+document.getElementById('quantidade').value = '';
+document.getElementById('minimo').value = '';
+document.getElementById('lote').value = '';
+document.getElementById('validade').value = '';
+document.getElementById('localizacao').value = '';
+
+}
+
+async function carregarProdutos(){
+
+const tabela = document.getElementById('tabelaProdutos');
+const select = document.getElementById('produtoSelect');
+
+if(!tabela || !select) return;
+
+tabela.innerHTML = '';
+select.innerHTML = '';
+
+const querySnapshot = await getDocs(collection(db, 'produtos'));
+
+querySnapshot.forEach((produtoDoc)=>{
+
+const produto = produtoDoc.data();
+const id = produtoDoc.id;
+
+let status = 'Normal';
+let classe = 'normal';
+
+if(produto.quantidade <= produto.minimo){
+status = 'Baixo';
+classe = 'baixo';
+}
+
+const hoje = new Date();
+const validade = new Date(produto.validade);
+const diferenca = Math.ceil((validade - hoje) / (1000 * 60 * 60 * 24));
+
+if(diferenca <= 7){
+status = 'Vencendo';
+classe = 'vencendo';
+}
+
+select.innerHTML += `
+<option value="${id}">
+${produto.nome}
+</option>
+`;
+
+tabela.innerHTML += `
+<tr>
+<td>${produto.nome}</td>
+<td>${produto.quantidade}</td>
+<td>${produto.minimo}</td>
+<td>${produto.lote}</td>
+<td>${produto.validade}</td>
+<td>${produto.localizacao}</td>
+<td>
+<span class="${classe}">
+${status}
+</span>
+</td>
+</tr>
+`;
+
+});
+
+}
+
+window.movimentarEstoque = async function(){
+
+const id = document.getElementById('produtoSelect').value;
+const quantidade = parseInt(document.getElementById('movQuantidade').value);
+const tipo = document.getElementById('tipoMov').value;
+
+const querySnapshot = await getDocs(collection(db, 'produtos'));
+
+querySnapshot.forEach(async(produtoDoc)=>{
+
+if(produtoDoc.id === id){
+
+let produto = produtoDoc.data();
+let novaQuantidade = produto.quantidade;
+
+if(tipo === 'entrada'){
+
+novaQuantidade += quantidade;
+
+}else{
+
+if(produto.quantidade < quantidade){
+alert('Estoque insuficiente');
+return;
+}
+
+novaQuantidade -= quantidade;
+
+}
+
+await updateDoc(doc(db, 'produtos', id), {
+quantidade: novaQuantidade
+});
+
+alert('Estoque atualizado');
+
+carregarProdutos();
+
+}
+
+});
+
+}
+```
+
+---
+
+# LOGIN PADRÃO
+
+Usuário:
+
+```text
+admin
+```
+
+Senha:
+
+```text
+1234
+```
+
+---
+
+# ESTRUTURA DA PASTA
+
+```text
+DEXCAR/
+¦
++-- index.html
++-- style.css
++-- script.js
+```
+
+---
+
+# COMO HOSPEDAR
+
+Você pode usar:
+
+* Render
+* Vercel
+* Netlify
+
+Com Firebase funcionando online.
