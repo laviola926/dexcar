@@ -1,165 +1,29 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dexcar Estoque PRO</title>
 
-<style>
+<title>DEXCAR ESTOQUE PRO</title>
 
-body{
-font-family:Arial;
-background:#f1f5f9;
-margin:0;
-padding:0;
-}
+<link rel="stylesheet" href="style.css">
 
-.login{
-width:320px;
-margin:80px auto;
-background:white;
-padding:30px;
-border-radius:15px;
-box-shadow:0 0 10px rgba(0,0,0,0.1);
-}
-
-.login h2{
-text-align:center;
-color:#0f172a;
-}
-
-input,select{
-width:100%;
-padding:12px;
-margin-top:10px;
-border-radius:10px;
-border:1px solid #ccc;
-font-size:16px;
-box-sizing:border-box;
-}
-
-button{
-width:100%;
-padding:12px;
-margin-top:15px;
-background:#2563eb;
-color:white;
-border:none;
-border-radius:10px;
-font-size:16px;
-cursor:pointer;
-}
-
-button:hover{
-background:#1d4ed8;
-}
-
-header{
-background:#0f172a;
-color:white;
-padding:20px;
-text-align:center;
-font-size:28px;
-font-weight:bold;
-}
-
-.container{
-padding:20px;
-max-width:1200px;
-margin:auto;
-}
-
-.card{
-background:white;
-padding:20px;
-border-radius:15px;
-margin-bottom:20px;
-box-shadow:0 2px 10px rgba(0,0,0,0.1);
-}
-
-table{
-width:100%;
-border-collapse:collapse;
-margin-top:20px;
-}
-
-table th{
-background:#0f172a;
-color:white;
-padding:12px;
-}
-
-table td{
-padding:12px;
-border-bottom:1px solid #ddd;
-text-align:center;
-}
-
-.baixo{
-background:#fee2e2;
-color:#dc2626;
-padding:5px 10px;
-border-radius:20px;
-font-weight:bold;
-}
-
-.normal{
-background:#dcfce7;
-color:#16a34a;
-padding:5px 10px;
-border-radius:20px;
-font-weight:bold;
-}
-
-.vencendo{
-background:#fef3c7;
-color:#d97706;
-padding:5px 10px;
-border-radius:20px;
-font-weight:bold;
-}
-
-.sair{
-background:red;
-width:auto;
-padding:10px 20px;
-float:right;
-margin-top:-10px;
-}
-
-.dashboard{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:20px;
-margin-bottom:20px;
-}
-
-.dashboard-card{
-background:white;
-padding:20px;
-border-radius:15px;
-box-shadow:0 2px 10px rgba(0,0,0,0.1);
-text-align:center;
-}
-
-.dashboard-card h3{
-margin:0;
-color:#64748b;
-}
-
-.dashboard-card h2{
-font-size:32px;
-margin-top:10px;
-}
-
-</style>
 </head>
 
 <body>
 
-<div id="loginTela" class="login">
+<!-- LOGIN -->
 
-<h2>Login Dexcar</h2>
+<div id="loginTela" class="login-container">
+
+<div class="login-box">
+
+<h1>DEXCAR</h1>
+
+<p>Sistema Inteligente de Estoque</p>
 
 <input type="text" id="usuario" placeholder="Usuário">
 
@@ -169,41 +33,94 @@ margin-top:10px;
 Entrar
 </button>
 
-<p id="erro" style="color:red;text-align:center"></p>
+<p id="erro"></p>
 
 </div>
 
+</div>
+
+<!-- SISTEMA -->
+
 <div id="sistema" style="display:none;">
+
+<!-- MENU -->
+
+<div class="sidebar">
+
+<h2>DEXCAR</h2>
+
+<ul>
+
+<li>📦 Produtos</li>
+
+<li>📊 Dashboard</li>
+
+<li>📋 Movimentações</li>
+
+<li>⚠️ Alertas</li>
+
+<li>🧾 Auditoria</li>
+
+<li onclick="sair()">🚪 Sair</li>
+
+</ul>
+
+</div>
+
+<!-- CONTEÚDO -->
+
+<div class="main-content">
 
 <header>
 
-DEXCAR - SISTEMA DE ESTOQUE PRO
+<div>
 
-<button class="sair" onclick="sair()">
-Sair
-</button>
+<h1>Controle de Estoque</h1>
+
+<p>Painel Administrativo</p>
+
+</div>
+
+<div class="online">
+🟢 Online
+</div>
 
 </header>
-
-<div class="container">
 
 <!-- DASHBOARD -->
 
 <div class="dashboard">
 
-<div class="dashboard-card">
+<div class="card-dashboard">
+
 <h3>Total Produtos</h3>
+
 <h2 id="totalProdutos">0</h2>
+
 </div>
 
-<div class="dashboard-card">
+<div class="card-dashboard alerta">
+
 <h3>Estoque Baixo</h3>
+
 <h2 id="estoqueBaixo">0</h2>
+
 </div>
 
-<div class="dashboard-card">
-<h3>Produtos Vencendo</h3>
+<div class="card-dashboard vencimento">
+
+<h3>Vencendo</h3>
+
 <h2 id="produtosVencendo">0</h2>
+
+</div>
+
+<div class="card-dashboard">
+
+<h3>Movimentações</h3>
+
+<h2 id="movimentacoes">0</h2>
+
 </div>
 
 </div>
@@ -214,17 +131,29 @@ Sair
 
 <h2>Cadastrar Produto</h2>
 
-<input type="text" id="nome" placeholder="Nome do produto">
+<div class="grid">
+
+<input type="text" id="nome" placeholder="Produto">
+
+<input type="text" id="codigo" placeholder="Código">
+
+<input type="text" id="categoria" placeholder="Categoria">
 
 <input type="number" id="quantidade" placeholder="Quantidade">
 
 <input type="number" id="minimo" placeholder="Estoque mínimo">
 
+<input type="text" id="fornecedor" placeholder="Fornecedor">
+
 <input type="text" id="lote" placeholder="Lote">
 
 <input type="date" id="validade">
 
-<input type="text" id="localizacao" placeholder="Localização">
+<input type="text" id="localizacao" placeholder="Prateleira / Local">
+
+<input type="number" id="preco" placeholder="Preço">
+
+</div>
 
 <button onclick="adicionarProduto()">
 Cadastrar Produto
@@ -238,6 +167,8 @@ Cadastrar Produto
 
 <h2>Movimentar Estoque</h2>
 
+<div class="grid">
+
 <select id="produtoSelect"></select>
 
 <input type="number" id="movQuantidade" placeholder="Quantidade">
@@ -250,9 +181,23 @@ Cadastrar Produto
 
 </select>
 
+<input type="text" id="responsavel" placeholder="Responsável">
+
+</div>
+
 <button onclick="movimentarEstoque()">
 Salvar Movimentação
 </button>
+
+</div>
+
+<!-- PESQUISA -->
+
+<div class="card">
+
+<h2>Pesquisar Produto</h2>
+
+<input type="text" id="pesquisa" placeholder="Pesquisar produto...">
 
 </div>
 
@@ -262,6 +207,8 @@ Salvar Movimentação
 
 <h2>Produtos</h2>
 
+<div class="tabela">
+
 <table>
 
 <thead>
@@ -269,11 +216,23 @@ Salvar Movimentação
 <tr>
 
 <th>Produto</th>
+
+<th>Código</th>
+
+<th>Categoria</th>
+
 <th>Quantidade</th>
+
 <th>Mínimo</th>
+
 <th>Lote</th>
+
 <th>Validade</th>
+
 <th>Localização</th>
+
+<th>Preço</th>
+
 <th>Status</th>
 
 </tr>
@@ -288,9 +247,44 @@ Salvar Movimentação
 
 </div>
 
+<!-- HISTÓRICO -->
+
+<div class="card">
+
+<h2>Histórico de Movimentações</h2>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Produto</th>
+
+<th>Tipo</th>
+
+<th>Quantidade</th>
+
+<th>Responsável</th>
+
+<th>Data</th>
+
+</tr>
+
+</thead>
+
+<tbody id="historicoMov"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
 </div>
 
 <script type="module" src="script.js"></script>
 
 </body>
+
 </html>
